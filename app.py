@@ -7,10 +7,10 @@ from cvzone.PoseModule import PoseDetector as pm
 
 app = Flask(__name__)
 cap = cv2.VideoCapture(0)
-recording = False  # Flag to indicate if recording is in progress
-output_video = None  # VideoWriter object to write the frames
-
 detector = pm()
+# video_filename = 'output.avi'  # Output video filename
+fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Codec for video output
+output_video = None  # VideoWriter object to write the frames
 
 def generate_frames():
     x = datetime.datetime.now()
@@ -22,15 +22,10 @@ def generate_frames():
     global output_video
     while True:
         success, img = cap.read()
-        if not success:      
-            print("Failed to read frame from camera")
-            break
-        if img.size == 0:
-            print("Image has zero size")
-        else:
-            img = cv2.resize(img, (1280, 720))
-        
+        img = cv2.resize(img, (1280, 720))
+        img = detector.findPose(img)
         lmList, bboxInfo = detector.findPosition(img, draw=False)
+
         if lmList:
             p1 = lmList[11]
             p2 = lmList[13]
@@ -81,8 +76,19 @@ def generate_frames():
             per = np.interp(angle, (210, 310), (0, 100))
             bar = np.interp(angle, (220, 310), (650, 100))
 
-        if recording and output_video is not None:
-            output_video.write(img)
+        if not success:
+            break
+
+        if output_video is None:
+            # Get the dimensions of the frame
+            height, width, channels = img.shape
+            x = datetime.datetime.now()
+            x = datetime.datetime.now()
+            filename = x.strftime("%Y%m%d_%H%M%S")  # Format the datetime object as a string
+            output_video = cv2.VideoWriter(f'{filename}_output.avi', fourcc, 20.0, (width, height))
+
+            # Write the frame to the output video file
+        output_video.write(img)
 
         ret, buffer = cv2.imencode('.jpg', img)
         frame = buffer.tobytes()
@@ -103,16 +109,14 @@ def video():
 
 @app.route('/stop_recording')
 def stop_recording():
-    global output_video, recording
+    global output_video
 
     if output_video is not None:
         output_video.release()  # Release the video writer
         output_video = None
 
-    recording = False
-
     return 'Video recording stopped.'
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=False, host="0.0.0.0", port=5000)
