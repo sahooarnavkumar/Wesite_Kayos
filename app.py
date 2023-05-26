@@ -21,6 +21,8 @@ def generate_frames():
     global output_video
     while True:
         success, img = cap.read()
+        if not success or img is None:
+            continue
         img = cv2.resize(img, (1280, 720))
         img = detector.findPose(img)
         lmList, bboxInfo = detector.findPosition(img, draw=False)
