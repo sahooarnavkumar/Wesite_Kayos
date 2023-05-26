@@ -12,7 +12,9 @@ detector = pm()
 def generate_frames():
     while True:
         success, img = cap.read()
-        img = cv2.flip(img, 1)  # Flip the image horizontally for mirror effect
+        if img is not None:
+            img = cv2.flip(img, 1)
+            img = cv2.resize(img, (1280, 720))
         img = detector.findPose(img)
         lmList, bboxInfo = detector.findPosition(img, draw=False)
 
