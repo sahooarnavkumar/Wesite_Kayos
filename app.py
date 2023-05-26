@@ -22,7 +22,6 @@ def generate_frames():
         lmList, bboxInfo = detector.findPosition(img, draw=False)
 
         if lmList:
-            if lmList:
             p1 = lmList[11]
             p2 = lmList[13]
             p3 = lmList[15]
@@ -80,6 +79,7 @@ def generate_frames():
             output_video = cv2.VideoWriter(f'{filename}_output.avi', fourcc, 20.0, (width, height))
 
         output_video.write(img)
+            
 
         ret, buffer = cv2.imencode('.jpg', img)
         frame = buffer.tobytes()
