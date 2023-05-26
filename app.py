@@ -8,9 +8,8 @@ from cvzone.PoseModule import PoseDetector as pm
 app = Flask(__name__)
 cap = cv2.VideoCapture(0)
 detector = pm()
-# video_filename = 'output.avi'  # Output video filename
-fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Codec for video output
-output_video = None  # VideoWriter object to write the frames
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+output_video = None
 
 def generate_frames():
     x = datetime.datetime.now()
@@ -38,7 +37,6 @@ def generate_frames():
             angle = math.degrees(math.atan2(y3 - y2, x3 - x2) - math.atan2(y1 - y2, x1 - x2))
 
             color = (255, 0, 255)
-            # Checking for dumble curls
             if per == 100:
                 color = (0, 255, 0)
                 if dir == 0:
@@ -49,13 +47,12 @@ def generate_frames():
                 if dir == 1:
                     count += 0.5
                     dir = 0
-            # print(count)
+
             cv2.rectangle(img, (1100, 100), (1175, 650), color, 3)
             cv2.rectangle(img, (1100, int(bar)), (1175, 650), color, cv2.FILLED)
             cv2.putText(img, f'{int(per)} %', (1100, 75), cv2.FONT_HERSHEY_PLAIN, 4,
                         color, 4)
 
-            # Draw Curl Count
             cv2.rectangle(img, (0, 450), (250, 720), (0, 255, 0), cv2.FILLED)
             cv2.putText(img, str(int(count)), (45, 670), cv2.FONT_HERSHEY_PLAIN, 15,
                         (255, 0, 0), 25)
@@ -80,14 +77,11 @@ def generate_frames():
             break
 
         if output_video is None:
-            # Get the dimensions of the frame
             height, width, channels = img.shape
             x = datetime.datetime.now()
-            x = datetime.datetime.now()
-            filename = x.strftime("%Y%m%d_%H%M%S")  # Format the datetime object as a string
+            filename = x.strftime("%Y%m%d_%H%M%S")
             output_video = cv2.VideoWriter(f'{filename}_output.avi', fourcc, 20.0, (width, height))
 
-            # Write the frame to the output video file
         output_video.write(img)
 
         ret, buffer = cv2.imencode('.jpg', img)
@@ -112,7 +106,7 @@ def stop_recording():
     global output_video
 
     if output_video is not None:
-        output_video.release()  # Release the video writer
+        output_video.release()
         output_video = None
 
     return 'Video recording stopped.'
@@ -120,3 +114,4 @@ def stop_recording():
 
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0", port=5000)
+
