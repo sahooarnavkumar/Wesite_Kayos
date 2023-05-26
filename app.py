@@ -1,3 +1,8 @@
+
+#         success, img = cap.read()
+#         if not success or img is None:
+#             continue
+         
 from flask import Flask, render_template, Response
 import cv2
 import numpy as np
@@ -8,26 +13,16 @@ from cvzone.PoseModule import PoseDetector as pm
 app = Flask(__name__)
 cap = cv2.VideoCapture(0)
 detector = pm()
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-output_video = None
 
 def generate_frames():
-    x = datetime.datetime.now()
-    date = '%d/%m/%Y'
-    count = 0
-    dir = 0
-    per = 0
-    bar = 0
-    global output_video
     while True:
         success, img = cap.read()
-        if not success or img is None:
-            continue
         img = cv2.resize(img, (1280, 720))
         img = detector.findPose(img)
         lmList, bboxInfo = detector.findPosition(img, draw=False)
 
         if lmList:
+            if lmList:
             p1 = lmList[11]
             p2 = lmList[13]
             p3 = lmList[15]
@@ -108,7 +103,7 @@ def stop_recording():
     global output_video
 
     if output_video is not None:
-        output_video.release()
+        output_video.release()  # Release the video writer
         output_video = None
 
     return 'Video recording stopped.'
@@ -116,4 +111,3 @@ def stop_recording():
 
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0", port=5000)
-
