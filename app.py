@@ -8,6 +8,8 @@ from cvzone.PoseModule import PoseDetector as pm
 app = Flask(__name__)
 cap = cv2.VideoCapture(0)
 detector = pm()
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+output_video = None
 
 def generate_frames():
     while True:
