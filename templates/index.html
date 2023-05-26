@@ -41,20 +41,24 @@
     </div>
     <h1 style="padding-left: 50px">Live streaming</h1>
     <div style="padding-left: 50px">
-      <img id="videoFrame" src="{{ url_for('video') }}" width="50%"/>
+      <video id="videoFrame" autoplay></video>
     </div>
     <script>
       const videoFrame = document.getElementById("videoFrame");
-      function startCamera() {
-        navigator.mediaDevices.getUserMedia({ video: true })
-          .then((stream) => {
-            videoFrame.srcObject = stream;
-          })
-          .catch((error) => {
-            console.log("Error accessing camera:", error);
-          });
-      }
-      startCamera()
+
+function startCamera() {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then((stream) => {
+      videoFrame.srcObject = stream;
+    })
+    .catch((error) => {
+      console.log("Error accessing camera:", error);
+    });
+}
+
+// Call the startCamera() function when needed
+startCamera();
+
     </script>
   </body>
 </html>
