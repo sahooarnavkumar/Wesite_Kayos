@@ -12,7 +12,6 @@ detector = pm()
 def generate_frames():
     while True:
         success, img = cap.read()
-        img = cv2.resize(img, (1280, 720))
         img = detector.findPose(img)
         lmList, bboxInfo = detector.findPosition(img, draw=False)
 
