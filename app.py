@@ -9,18 +9,31 @@ app = Flask(__name__)
 cap = cv2.VideoCapture(0)
 detector = pm()
 
+from flask import Flask, render_template, Response
+import cv2
+from cvzone.PoseModule import PoseDetector
+
+app = Flask(__name__)
+cap = cv2.VideoCapture(0)
+detector = PoseDetector()
+
 def generate_frames():
     while True:
         success, img = cap.read()
-        img = cv2.resize(img, (1280, 720))
-        img = detector.findPose(img)
-        lmList, bboxInfo = detector.findPosition(img, draw=False)
+        if not success:
+            break
 
-        if lmList:
-            # Draw the poses on the image
-            img = detector.drawPose(img)
+        img = cv2.flip(img, 1)  # Flip the image horizontally for mirror effect
 
-        ret, buffer = cv2.imencode('.jpg', img)
+        # Detect pose and get landmarks
+        img, _, _, _ = detector.findPose(img)
+        lmList, bboxInfo = detector.findPosition(img)
+
+        # Perform posture detection based on landmarks
+        # You can add your custom logic here to analyze the pose and perform specific actions
+
+        # Draw landmarks and bounding box
+        _, buffer = cv2.imencode('.jpg', img)
         frame = buffer.tobytes()
 
         yield (b'--frame\r\n'
