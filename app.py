@@ -33,7 +33,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/video_feed')
+@app.route('/video')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
