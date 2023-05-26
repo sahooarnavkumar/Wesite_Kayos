@@ -1,78 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kayos-Demo</title>
+  <head>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            background-color: #6194d5;
-            justify-content: space-between;
-            overflow: auto;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        background-color: #6194d5;
+        justify-content: space-between;
+        overflow: auto;
+      }
     </style>
-</head>
-<body style="background-color: #dbfcff">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kayos-Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  </head>
+  <body style="background-color: #dbfcff">
     <div>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid" style="text-align:center;">
-                <a class="navbar-brand" href="#">Kayos-AI Assist</a>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://kayosaifitness.company.site/">Buy Now</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid" style="text-align:center;">
+          <a class="navbar-brand" href="#">Kayos-AI Assist</a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://kayosaifitness.company.site/">Buy Now</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </div>
-
     <h1 style="padding-left: 50px">Live streaming</h1>
     <div style="padding-left: 50px">
-        <video id="videoPlayer" autoplay width="50%" style="border: 2px solid black;"></video>
-        <button id="startButton">Start Streaming</button>
-        <button id="stopButton">Stop Streaming</button>
+      <img id="videoFrame" src="" width="50%"/>
+      <a href="{{ url_for('stop_recording') }}" class="btn btn-primary " tabindex="-1" role="button" aria-disabled="true">Stop Recording</a>
     </div>
-
     <script>
-        const videoPlayer = document.getElementById('videoPlayer');
-        const startButton = document.getElementById('startButton');
-        const stopButton = document.getElementById('stopButton');
+      const videoFrame = document.getElementById("videoFrame");
 
-        startButton.addEventListener('click', startStreaming);
-        stopButton.addEventListener('click', stopStreaming);
+      function startCamera() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then((stream) => {
+            videoFrame.srcObject = stream;
+          })
+          .catch((error) => {
+            console.log("Error accessing camera:", error);
+          });
+      }
 
-        function startStreaming() {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    videoPlayer.srcObject = stream;
-                })
-                .catch(error => {
-                    console.log('Error accessing camera:', error);
-                });
+      function stopCamera() {
+        if (videoFrame.srcObject) {
+          videoFrame.srcObject.getTracks().forEach((track) => {
+            track.stop();
+          });
+          videoFrame.srcObject = null;
         }
+      }
 
-        function stopStreaming() {
-            const stream = videoPlayer.srcObject;
-            const tracks = stream.getTracks();
-
-            tracks.forEach(track => track.stop());
-            videoPlayer.srcObject = null;
-        }
+      document.getElementById("startButton").addEventListener("click", startCamera);
+      document.getElementById("stopButton").addEventListener("click", stopCamera);
     </script>
-</body>
+  </body>
 </html>
-
