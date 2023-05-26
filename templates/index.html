@@ -41,7 +41,7 @@
     </div>
     <h1 style="padding-left: 50px">Live streaming</h1>
     <div style="padding-left: 50px">
-      <img id="videoFrame" src="" width="50%"/>
+      <img id="videoFrame" src="{{ url_for('video') }}" width="50%"/>
       <a href="{{ url_for('stop_recording') }}" class="btn btn-primary " tabindex="-1" role="button" aria-disabled="true">Stop Recording</a>
     </div>
     <script>
