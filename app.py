@@ -22,13 +22,15 @@ def generate_frames():
     global output_video
     while True:
         success, img = cap.read()
+        if not success:      
+            print("Failed to read frame from camera")
+            break
         if img.size == 0:
             print("Image has zero size")
         else:
             img = cv2.resize(img, (1280, 720))
-        img = detector.findPose(img)
+        
         lmList, bboxInfo = detector.findPosition(img, draw=False)
-
         if lmList:
             p1 = lmList[11]
             p2 = lmList[13]
@@ -79,8 +81,7 @@ def generate_frames():
             per = np.interp(angle, (210, 310), (0, 100))
             bar = np.interp(angle, (220, 310), (650, 100))
 
-        if not success:
-            break
+        
 
         if output_video is None:
             # Get the dimensions of the frame
