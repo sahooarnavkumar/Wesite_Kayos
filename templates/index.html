@@ -42,11 +42,9 @@
     <h1 style="padding-left: 50px">Live streaming</h1>
     <div style="padding-left: 50px">
       <img id="videoFrame" src="{{ url_for('video') }}" width="50%"/>
-      <a href="{{ url_for('stop_recording') }}" class="btn btn-primary " tabindex="-1" role="button" aria-disabled="true">Stop Recording</a>
     </div>
     <script>
       const videoFrame = document.getElementById("videoFrame");
-
       function startCamera() {
         navigator.mediaDevices.getUserMedia({ video: true })
           .then((stream) => {
@@ -56,20 +54,6 @@
             console.log("Error accessing camera:", error);
           });
       }
-
-      function stopCamera() {
-        if (videoFrame.srcObject) {
-          videoFrame.srcObject.getTracks().forEach((track) => {
-            track.stop();
-          });
-          videoFrame.srcObject = null;
-        }
-      }
-
-      startCamera(); // Automatically start the camera when the page loads
-
-      // Stop the camera when the user navigates away from the page
-      window.addEventListener("beforeunload", stopCamera);
     </script>
   </body>
 </html>
