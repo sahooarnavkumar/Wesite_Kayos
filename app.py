@@ -1,6 +1,3 @@
-
-
-         
 from flask import Flask, render_template, Response
 import cv2
 import numpy as np
@@ -110,4 +107,4 @@ def stop_recording():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000)
