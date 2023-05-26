@@ -1,7 +1,5 @@
 
-#         success, img = cap.read()
-#         if not success or img is None:
-#             continue
+
          
 from flask import Flask, render_template, Response
 import cv2
@@ -17,6 +15,8 @@ detector = pm()
 def generate_frames():
     while True:
         success, img = cap.read()
+       if not success or img is None:
+                  continue
         img = cv2.resize(img, (1280, 720))
         img = detector.findPose(img)
         lmList, bboxInfo = detector.findPosition(img, draw=False)
