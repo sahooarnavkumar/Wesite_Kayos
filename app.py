@@ -15,7 +15,7 @@ detector = pm()
 def generate_frames():
     while True:
         success, img = cap.read()
-       if not success or img is None:
+        if not success or img is None:
                   continue
         img = cv2.resize(img, (1280, 720))
         img = detector.findPose(img)
