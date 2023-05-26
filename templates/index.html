@@ -45,7 +45,7 @@
     </div>
     <script>
       const videoFrame = document.getElementById("videoFrame");
-
+      video.srcObject = "{{ url_for('video') }}";
       function startCamera() {
         navigator.mediaDevices.getUserMedia({ video: true })
           .then((stream) => {
