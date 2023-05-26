@@ -22,7 +22,10 @@ def generate_frames():
     global output_video
     while True:
         success, img = cap.read()
-#         img = cv2.resize(img, (1280, 720))
+        if img.size == 0:
+            print("Image has zero size")
+        else:
+            img = cv2.resize(img, (1280, 720))
         img = detector.findPose(img)
         lmList, bboxInfo = detector.findPosition(img, draw=False)
 
