@@ -46,18 +46,19 @@
     <script>
       const videoFrame = document.getElementById("videoFrame");
 
-function startCamera() {
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then((stream) => {
-      videoFrame.srcObject = stream;
-    })
-    .catch((error) => {
-      console.log("Error accessing camera:", error);
-    });
-}
+      function startCamera() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then((stream) => {
+            videoFrame.srcObject = stream;
+          })
+          .catch((error) => {
+            console.log("Error accessing camera:", error);
+          });
+      }
 
-// Call the startCamera() function when needed
-startCamera();
+      // Call the startCamera() function when needed
+      startCamera();
+
 
     </script>
   </body>
