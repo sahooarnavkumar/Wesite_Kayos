@@ -37,6 +37,9 @@ def index():
 def video():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+def stop_recording():
+    # Code to stop the recording goes here
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
