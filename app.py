@@ -12,6 +12,11 @@ fourcc = cv2.VideoWriter_fourcc(*'XVID')
 output_video = None
 
 def generate_frames():
+    count = 0
+    dir = 0
+    per = 0
+    bar = 0
+    global output_video
     while True:
         success, img = cap.read()
         if not success or img is None:
@@ -51,7 +56,6 @@ def generate_frames():
             cv2.rectangle(img, (0, 450), (250, 720), (0, 255, 0), cv2.FILLED)
             cv2.putText(img, str(int(count)), (45, 670), cv2.FONT_HERSHEY_PLAIN, 15,
                         (255, 0, 0), 25)
-            actualCount = str(int(count))
 
             if angle < 0:
                 angle += 360
