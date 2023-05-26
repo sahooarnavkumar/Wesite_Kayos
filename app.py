@@ -11,7 +11,7 @@ import math
 from cvzone.PoseModule import PoseDetector as pm
 
 app = Flask(__name__)
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 detector = pm()
 
 def generate_frames():
