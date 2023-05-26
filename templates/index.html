@@ -66,8 +66,10 @@
         }
       }
 
-      document.getElementById("startButton").addEventListener("click", startCamera);
-      document.getElementById("stopButton").addEventListener("click", stopCamera);
+      startCamera(); // Automatically start the camera when the page loads
+
+      // Stop the camera when the user navigates away from the page
+      window.addEventListener("beforeunload", stopCamera);
     </script>
   </body>
 </html>
